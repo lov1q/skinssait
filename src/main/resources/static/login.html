@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Firebase Authentication</title>
+
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+  <script type="module" src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+  <script type="module" src="/static/frontend/app.js"></script>
+
+  <style>
+    body {
+      background-image: url('/static/fffon.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    #login-form {
+      background-color: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 10px;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    input, button {
+      width: 90%; /* Чуть меньше, чтобы не выходило за рамку */
+      max-width: 350px; /* Ограничение по ширине */
+      padding: 8px; /* Чуть уменьшил padding */
+      margin: 8px 0; /* Чуть уменьшил отступ */
+      font-size: 15px; /* Уменьшен размер шрифта */
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    p {
+      font-size: 14px;
+    }
+
+    a {
+      color: #007BFF;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div id="login-form">
+  <h2>Sign In</h2>
+  <form id="login-form-action">
+    <input type="email" id="login-email" placeholder="Email" required /><br />
+    <input type="password" id="login-password" placeholder="Password" required /><br />
+    <button type="submit">Login</button>
+  </form>
+  <p>Don't have an account? <a href="register.html">Sign Up</a></p>
+</div>
+</body>
+</html>
