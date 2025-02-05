@@ -33,11 +33,11 @@
     }
 
     input, button {
-      width: 90%; /* Чуть меньше, чтобы не выходило за рамку */
-      max-width: 350px; /* Ограничение по ширине */
-      padding: 8px; /* Чуть уменьшил padding */
-      margin: 8px 0; /* Чуть уменьшил отступ */
-      font-size: 15px; /* Уменьшен размер шрифта */
+      width: 90%;
+      max-width: 350px;
+      padding: 8px;
+      margin: 8px 0;
+      font-size: 15px;
     }
 
     button {
@@ -75,5 +75,14 @@
   </form>
   <p>Don't have an account? <a href="register.html">Sign Up</a></p>
 </div>
+
+<!-- Блокируем возврат назад -->
+<script>
+  history.pushState(null, null, window.location.href);
+  window.onpopstate = function () {
+      history.go(1); // Запрещаем назад
+  };
+</script>
+
 </body>
 </html>

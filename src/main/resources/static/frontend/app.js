@@ -51,38 +51,53 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const loginForm = document.getElementById("login-form-action");
 
-    if (loginForm) {
-        loginForm.addEventListener("submit", function (event) {
-            event.preventDefault();
-
-            const email = document.getElementById("login-email").value;
-            const password = document.getElementById("login-password").value;
-
-            // Вход через Firebase Authentication
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    console.log("User logged in:", user);
-                    alert("Login successful!");
-                })
-                .catch((error) => {
-                    const errorCode = error.code;
-                    const errorMessage = error.message;
-                    console.error("Login failed:", errorMessage);
-                    alert("Login failed: " + errorMessage);
-                });
-        });
-    } else {
+    if (!loginForm) {
         console.error("Login form not found!");
+        return;
     }
+
+    loginForm.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        const email = document.getElementById("login-email").value.trim();
+        const password = document.getElementById("login-password").value.trim();
+
+        if (!email || !password) {
+            alert("Please enter both email and password.");
+            return;
+        }
+
+        try {
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            console.log("User logged in:", userCredential.user);
+            alert("Login successful!");
+            window.location.href = "shop.html"; // ✅ Перенос на shop.html
+        } catch (error) {
+            console.error("Login failed:", error.message);
+            alert("Login failed: " + error.message);
+        }
+    });
 });
 
+
 // ✅ Выход
-document.getElementById("logout-button").addEventListener("click", function () {
-    signOut(auth).then(() => {
-        console.log("User signed out");
-        alert("Logged out successfully!");
-    }).catch((error) => {
-        console.error("Error signing out:", error);
+document.addEventListener("DOMContentLoaded", function () {
+    const logoutButton = document.getElementById("logout-button");
+
+    if (!logoutButton) {
+        console.error("Logout button not found!");
+        return;
+    }
+
+    logoutButton.addEventListener("click", async function () {
+        try {
+            await signOut(auth);
+            console.log("User signed out");
+            alert("Logged out successfully!");
+            window.location.href = "login.html"; // ✅ Перенос на страницу логина
+        } catch (error) {
+            console.error("Error signing out:", error.message);
+            alert("Error signing out: " + error.message);
+        }
     });
 });
