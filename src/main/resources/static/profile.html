@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        @font-face {
+            font-family: 'Nunito-Black';
+            src: url('fonts/Nunito-Black.ttf') format('truetype');
+        }
+
+
+        body {
+            font-family: 'Nunito-Black', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('/static/fffon.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(51, 51, 51, 1);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .navbar .logo a {
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: 0.3s;
+        }
+
+        .navbar .logo a:hover {
+            color: #ffcc00;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            margin-left: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .navbar .nav-links a:hover {
+            color: #ffcc00;
+        }
+
+        .filter-container {
+            position: fixed;
+            top: 53px;
+            left: 0;
+            width: 250px;
+            background-color: rgba(51, 51, 51, 1);
+            padding: 20px;
+            color: white;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .filter-container h3 {
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .filter-container select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+        }
+
+        .search-container {
+            margin-left: 300px;
+            margin-top: 75px;
+            width: 1575px;
+            padding-bottom: 2px;
+            padding-left: 10px;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+            margin-bottom: 20px;
+        }
+
+        /* Применяем стиль из формы авторизации для поля ввода */
+        .input-group {
+            width: 100%;
+            max-width: 20em;
+            display: flex;
+            flex-direction: column;
+            z-index: 2;
+        }
+
+        .input-group__label {
+            padding: 0 0.5em;
+            margin-bottom: 0.5em;
+            text-transform: uppercase;
+            font-size: 0.875em;
+            letter-spacing: 0.1em;
+            color: rgba(255, 220, 255, 0.6);
+            cursor: pointer;
+        }
+
+        .input-group__input {
+            color: #fff;
+            font-size: 1.25rem;
+            line-height: 1;
+            height: calc(1em + 1.6em + 0.5em);
+            width: 100%;
+            padding: 0.8em 1em;
+            border: 0.25em solid transparent;
+            background-image: linear-gradient(#000, #000),
+                linear-gradient(120deg, #f09 0%, #0ff 50%, #9f0 100%);
+            background-origin: border-box;
+            background-clip: padding-box, border-box;
+            border-radius: 1.8em;
+            background-size: 200% 100%;
+            transition: background-position 0.8s ease-out;
+        }
+
+        .input-group__input:hover {
+            background-position: 100% 0;
+        }
+
+        .input-group__input:focus {
+            outline: 2px dashed #ad2b89;
+            outline-offset: 0.5em;
+        }
+
+        .product-list-container {
+            margin-left: 280px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+            width: calc(100% - 250px - 20px);
+            height: calc(100vh - 120px);
+            overflow-y: auto;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 10;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            box-shadow: none;
+            overflow-y: auto;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-start;
+            box-sizing: border-box;
+        }
+
+        .item {
+            background: #e3e3e3;
+            margin: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 18px;
+            flex: 1 1 200px;
+            box-sizing: border-box;
+            max-width: 100%;  /* Ensures the image scales to fit the container */
+            max-height: 200px; /* Restricts the image height to prevent overflow */
+            object-fit: contain;  /* Ensures the image is resized proportionally */
+        }
+
+        .loader {
+            text-align: center;
+            font-size: 16px;
+            padding: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="logo"><a href="shop.html">LoviCS2</a></div>
+    <div class="nav-links">
+        <a href="#" id="profile-button">Profile</a>
+        <a href="#" id="logout-button">Logout</a>
+    </div>
+</div>
+
+<div class="filter-container">
+    <h3>Filter Products</h3>
+    <div class="input-group">
+        <label class="input-group__label" for="exterior-filter">Exterior</label>
+        <select id="exterior-filter"></select>
+    </div>
+    <div class="input-group">
+        <label class="input-group__label" for="gun-filter">Gun</label>
+        <select id="gun-filter"></select>
+    </div>
+    <div class="input-group">
+        <label class="input-group__label" for="quality-filter">Quality</label>
+        <select id="quality-filter"></select>
+    </div>
+    <div class="input-group">
+        <label class="input-group__label" for="type-filter">Type</label>
+        <select id="type-filter"></select>
+    </div>
+</div>
+
+<div class="search-container">
+    <div class="input-group">
+        <label class="input-group__label" for="search">Search items...</label>
+        <input type="text" id="search" class="input-group__input" placeholder="Search items..." />
+    </div>
+</div>
+
+<div class="product-list-container">
+    <div class="container" id="list-container"></div>
+    <div class="loader" id="loader">Loading...</div>
+</div>
+
+<script type="module" src="/static/frontend/app.js"></script>
+
+    <script>
+        const STORAGE_EXPIRATION = 3600000; // Время хранения в localStorage (1 час)
+        let allItems = [];  // Массив для всех предметов
+        const inventoryList = document.getElementById('container');
+
+
+        async function fetchInventory() {
+            try {
+                const storedInventory = localStorage.getItem("inventory");
+                const lastUpdated = localStorage.getItem("inventoryLastUpdated");
+
+                // Проверяем, есть ли данные в localStorage и они еще актуальны
+                if (storedInventory && lastUpdated && (Date.now() - lastUpdated < STORAGE_EXPIRATION)) {
+                    allItems = JSON.parse(storedInventory);
+                    displayInventory(allItems);  // Отображаем инвентарь сразу
+                    return;
+                }
+
+                // Загружаем инвентарь с API
+                const response = await fetch("http://localhost:3000/api/inventory");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Ответ от сервера:', data);
+
+                // Проверяем, что данные правильные (например, массив инвентаря)
+                if (data && data.inventory && Array.isArray(data.inventory)) {
+                    allItems = data.inventory.map(item => ({
+                        image: item.image || "default-image.jpg", // Если нет изображения, подставляем стандартное
+                        title: item.title || "Unknown Item",
+                        type: item.type || "No Type",
+                        exterior: item.exterior || "No Exterior",
+                        quality: item.quality || "No Quality"
+                    }));
+
+                    // Сохраняем инвентарь в localStorage
+                    localStorage.setItem("inventory", JSON.stringify(allItems));
+                    localStorage.setItem("inventoryLastUpdated", Date.now().toString());
+
+                    displayInventory(allItems);  // Отображаем инвентарь
+                }
+            } catch (error) {
+                console.error("Ошибка при загрузке инвентаря:", error);
+            } finally {
+                // Скрыть загрузчик
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.style.display = "none";
+                }
+            }
+        }
+
+        // Функция для отображения инвентаря на странице
+        // Функция для отображения инвентаря на странице
+        function displayInventory(items) {
+            const inventoryList = document.getElementById('list-container'); // Заменили на list-container
+            console.log("inventoryList:", inventoryList);  // Логируем, чтобы увидеть, что он найден
+
+            if (!inventoryList) {
+                console.error("Элемент с id 'list-container' не найден.");
+                return;
+            }
+
+            inventoryList.innerHTML = ''; // Очищаем список перед добавлением новых элементов
+
+            if (items.length === 0) {
+                inventoryList.innerHTML = '<p>Ваш инвентарь пуст.</p>';
+                return;
+            }
+
+            items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('inventory-item');
+                itemElement.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="item-image">
+                    <div class="item-details">
+                        <h3>${item.title}</h3>
+                        <p>Тип: ${item.type}</p>
+                        <p>Экстерьер: ${item.exterior}</p>
+                        <p>Качество: ${item.quality}</p>
+                    </div>
+                `;
+                inventoryList.appendChild(itemElement);
+            });
+        }
+
+        // Загружаем инвентарь при загрузке страницы
+        window.onload = fetchInventory;
+
+    </script>
+
+</body>
+</html>

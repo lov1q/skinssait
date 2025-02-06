@@ -71,7 +71,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             console.log("User logged in:", userCredential.user);
             alert("Login successful!");
-            window.location.href = "shop.html"; // ✅ Перенос на shop.html
+
+            // Добавляем анимацию исчезновения
+            document.body.classList.add('fade-out');
+
+            // Задерживаем редирект на 1 секунду (время анимации)
+            setTimeout(function() {
+                window.location.href = "shop.html"; // ✅ Перенос на shop.html
+            }, 1000); // 1000 миллисекунд = 1 секунда
         } catch (error) {
             console.error("Login failed:", error.message);
             alert("Login failed: " + error.message);
